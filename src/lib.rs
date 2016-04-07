@@ -4,6 +4,8 @@ pub mod coprocessor;
 #[cfg_attr(rustfmt, rustfmt_skip)]
 pub mod errorpb;
 #[cfg_attr(rustfmt, rustfmt_skip)]
+pub mod expression;
+#[cfg_attr(rustfmt, rustfmt_skip)]
 pub mod kvrpcpb;
 #[cfg_attr(rustfmt, rustfmt_skip)]
 pub mod metapb;
@@ -21,3 +23,7 @@ pub mod raft_cmdpb;
 pub mod raft_serverpb;
 #[cfg_attr(rustfmt, rustfmt_skip)]
 pub mod raftpb;
+#[cfg_attr(rustfmt, rustfmt_skip)]
+pub mod schema;
+#[cfg_attr(rustfmt, rustfmt_skip)]
+pub mod select;
