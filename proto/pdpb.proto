@@ -68,10 +68,10 @@ message AllocIdResponse {
 }
 
 message GetMetaRequest {
-    optional MetaType meta_type    = 1;
-    optional uint64 store_id       = 2;
-    optional bytes region_key      = 3;
-    optional uint64 cluster_id     = 4;
+	optional MetaType meta_type    = 1;
+	optional uint64 store_id       = 2;
+	optional bytes region_key      = 3;
+	optional string cluster_name   = 4;
 }
 
 message GetMetaResponse {
@@ -118,13 +118,13 @@ message AskSplitResponse {
 message RequestHeader {
     // 16 bytes, to distinguish request.  
     optional bytes uuid                = 1;
-    optional uint64 cluster_id         = 2;
+    optional string cluster_name         = 2;
 }
 
 message ResponseHeader {
     // 16 bytes, to distinguish request.  
     optional bytes uuid                = 1;
-    optional uint64 cluster_id         = 2;
+    optional string cluster_name         = 2;
     optional Error error               = 3;
 }
 
