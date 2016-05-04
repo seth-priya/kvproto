@@ -9,16 +9,19 @@ message Leader {
 }
 
 enum CommandType {
-    Invalid        = 0;
-    Tso            = 1;
-    Bootstrap      = 2;
-    IsBootstrapped = 3;
-    AllocId        = 4;
-    GetMeta        = 5;
-    PutMeta        = 6;
-    DeleteMeta     = 7;
-    AskChangePeer  = 8;
-    AskSplit       = 9;
+    Invalid             = 0;
+    Tso                 = 1;
+    Bootstrap           = 2;
+    IsBootstrapped      = 3;
+    AllocId             = 4;
+    GetStore            = 5;
+    PutStore            = 6;
+    DeleteMeta          = 7;
+    AskChangePeer       = 8;
+    AskSplit            = 9;
+    GetRegion           = 10;
+    GetClusterConfig    = 11;
+    PutClusterConfig    = 12;
 }
 
 message TsoRequest {
@@ -145,7 +148,7 @@ message Request {
     optional GetRegionRequest get_region                = 10;
     optional GetClusterConfigRequest get_cluster_config = 11;
     optional PutStoreRequest put_store                  = 12;
-    optional PutClusterConfigRequest put_region         = 13;
+    optional PutClusterConfigRequest put_cluster_config = 13;
 }
 
 message Response {
@@ -161,7 +164,7 @@ message Response {
     optional GetRegionResponse get_region                   = 10;
     optional GetClusterConfigResponse get_cluster_config    = 11;
     optional PutStoreResponse put_store                     = 12;
-    optional PutClusterConfigResponse put_region            = 13;
+    optional PutClusterConfigResponse put_cluster_config    = 13;
 }
 
 message BootstrappedError {
