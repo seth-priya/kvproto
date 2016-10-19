@@ -88,8 +88,7 @@ message SplitRequest {
 }
 
 message SplitResponse {
-    optional metapb.Region left  = 1;
-    optional metapb.Region right = 2;
+    repeated metapb.Region regions  = 1;
 }
 
 message CompactLogRequest {
@@ -118,9 +117,9 @@ enum AdminCmdType {
 message AdminRequest {
     optional AdminCmdType cmd_type                  = 1;
     optional ChangePeerRequest change_peer          = 2;
-    optional SplitRequest split                     = 3;
     optional CompactLogRequest compact_log          = 4;
     optional TransferLeaderRequest transfer_leader  = 5;
+    repeated SplitRequest splits                    = 6;
 }
 
 message AdminResponse {
