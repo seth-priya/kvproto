@@ -12,6 +12,7 @@ message RaftMessage {
     optional metapb.RegionEpoch region_epoch  = 5;
     // true means to_peer is a tombstone peer and it should remove itself.
     optional bool is_tombstone                = 6;
+    optional bytes end_key                    = 7;
 }
 
 message RaftTruncatedState {
