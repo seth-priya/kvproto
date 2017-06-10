@@ -137,6 +137,13 @@ const METHOD_TIKV_SNAPSHOT: ::grpc::Method<super::raft_serverpb::SnapshotChunk, 
     resp_mar: ::grpc::Marshaller { ser: ::grpc::pb_ser, de: ::grpc::pb_de },
 };
 
+const METHOD_TIKV_RAW_STREAM: ::grpc::Method<super::kvrpcpb::RawRequest, super::kvrpcpb::RawResponse> = ::grpc::Method {
+    ty: ::grpc::MethodType::Duplex,
+    name: "/tikvpb.Tikv/RawStream",
+    req_mar: ::grpc::Marshaller { ser: ::grpc::pb_ser, de: ::grpc::pb_de },
+    resp_mar: ::grpc::Marshaller { ser: ::grpc::pb_ser, de: ::grpc::pb_de },
+};
+
 pub struct TikvClient {
     client: ::grpc::Client,
 }
@@ -403,6 +410,14 @@ impl TikvClient {
     pub fn snapshot(&self) -> (::grpc::ClientCStreamSender<super::raft_serverpb::SnapshotChunk>, ::grpc::ClientCStreamReceiver<super::raft_serverpb::Done>) {
         self.snapshot_opt(::grpc::CallOption::default())
     }
+
+    pub fn raw_stream_opt(&self, opt: ::grpc::CallOption) -> (::grpc::ClientDuplexSender<super::kvrpcpb::RawRequest>, ::grpc::ClientDuplexReceiver<super::kvrpcpb::RawResponse>) {
+        self.client.duplex_streaming(&METHOD_TIKV_RAW_STREAM, opt)
+    }
+
+    pub fn raw_stream(&self) -> (::grpc::ClientDuplexSender<super::kvrpcpb::RawRequest>, ::grpc::ClientDuplexReceiver<super::kvrpcpb::RawResponse>) {
+        self.raw_stream_opt(::grpc::CallOption::default())
+    }
     pub fn spawn<F>(&self, f: F) where F: ::futures::Future<Item = (), Error = ()> + Send + 'static {
         self.client.spawn(f)
     }
@@ -426,6 +441,7 @@ pub trait Tikv {
     fn coprocessor(&self, ctx: ::grpc::RpcContext, req: super::coprocessor::Request, sink: ::grpc::UnarySink<super::coprocessor::Response>);
     fn raft(&self, ctx: ::grpc::RpcContext, stream: ::grpc::RequestStream<super::raft_serverpb::RaftMessage>, sink: ::grpc::ClientStreamingSink<super::raft_serverpb::Done>);
     fn snapshot(&self, ctx: ::grpc::RpcContext, stream: ::grpc::RequestStream<super::raft_serverpb::SnapshotChunk>, sink: ::grpc::ClientStreamingSink<super::raft_serverpb::Done>);
+    fn raw_stream(&self, ctx: ::grpc::RpcContext, stream: ::grpc::RequestStream<super::kvrpcpb::RawRequest>, sink: ::grpc::DuplexSink<super::kvrpcpb::RawResponse>);
 }
 
 pub fn create_tikv<S: Tikv + Send + Clone + 'static>(s: S) -> ::grpc::Service {
@@ -497,6 +513,10 @@ pub fn create_tikv<S: Tikv + Send + Clone + 'static>(s: S) -> ::grpc::Service {
     let instance = s.clone();
     builder = builder.add_client_streaming_handler(&METHOD_TIKV_SNAPSHOT, move |ctx, req, resp| {
         instance.snapshot(ctx, req, resp)
+    });
+    let instance = s.clone();
+    builder = builder.add_duplex_streaming_handler(&METHOD_TIKV_RAW_STREAM, move |ctx, req, resp| {
+        instance.raw_stream(ctx, req, resp)
     });
     builder.build()
 }

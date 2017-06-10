@@ -39,4 +39,7 @@ service Tikv {
     // Raft commands (tikv <-> tikv).
     rpc Raft(stream raft_serverpb.RaftMessage) returns (raft_serverpb.Done) {}
     rpc Snapshot(stream raft_serverpb.SnapshotChunk) returns (raft_serverpb.Done) {}
+
+    // stream.
+    rpc RawStream(stream kvrpcpb.RawRequest) returns (stream kvrpcpb.RawResponse) {}
 }

@@ -211,3 +211,17 @@ message RawDeleteResponse {
     errorpb.Error region_error = 1;
     string error = 2;
 }
+
+message RawRequest {
+    uint64 msg_id = 1;
+    RawGetRequest raw_get = 2;
+    RawPutRequest raw_put = 3;
+    RawDeleteRequest raw_delete = 4;
+}
+
+message RawResponse {
+    uint64 msg_id = 1;
+    RawGetResponse raw_get = 2;
+    RawPutResponse raw_put = 3;
+    RawDeleteResponse raw_delete = 4;
+}
