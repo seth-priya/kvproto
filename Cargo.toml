@@ -12,4 +12,5 @@ futures = "0.1"
 
 [dependencies.grpc]
 git = "https://github.com/pingcap/grpc-rs.git"
+branch = "grpc-latest"
 features = ["static-link"]
